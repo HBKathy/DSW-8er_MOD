@@ -1,4 +1,4 @@
-MERGE INTO temp_table_alle_kt_dsw_mod6 t 
+MERGE INTO temp_table_alle_kt_dsw_mod8 t 
 USING ( 
 SELECT  
 p.teilenr, 
@@ -11,7 +11,7 @@ LEFT JOIN status s ON b.status = s.kz
 WHERE p.teilenr IN (  
 SELECT DISTINCT a.teilenr  
 FROM allocs a  
-WHERE a.prodauftr LIKE 'KA2018120603%'
+WHERE a.prodauftr LIKE 'KA2018120644%'
 ) 
 AND b.status BETWEEN 2700 AND 2950 
 GROUP BY p.teilenr 
