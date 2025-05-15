@@ -1,11 +1,11 @@
-MERGE INTO temp_table_alle_kt_dsw_mod6 t 
+MERGE INTO temp_table_alle_kt_dsw_mod8 t 
 USING  
 ( 
    SELECT  
         a.teilenr,  
         SUM(a.resmenge) AS summe_auftrmenge 
 FROM allocs a 
-WHERE a.prodauftr LIKE 'KA2018120603%'
+WHERE a.prodauftr LIKE 'KA2018120644%'
    GROUP BY a.teilenr 
 ) src 
 ON (t.teilenr = src.teilenr) 
