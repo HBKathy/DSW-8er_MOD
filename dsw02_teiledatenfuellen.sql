@@ -1,4 +1,4 @@
-INSERT INTO temp_table_alle_kt_dsw_mod6 (
+INSERT INTO temp_table_alle_kt_dsw_mod8 (
     teilenr,
     bez,
     bez2,
@@ -41,7 +41,7 @@ SELECT
 FROM allocs a
 JOIN parts p ON p.teilenr = a.teilenr
 LEFT JOIN FinalPreis fp ON a.teilenr = fp.teilenr
-WHERE a.prodauftr LIKE 'KA2018120603%'
+WHERE a.prodauftr LIKE 'KA2018120644%'
 AND (
     (p.kzkauf = 'K' AND p.dispo_aktiv_jn != 'N') 
     OR (p.kzkauf = 'E' AND p.VERLAGERUNGS_ART IN ('VO', 'VM', 'KB'))
