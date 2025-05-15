@@ -1,4 +1,4 @@
-MERGE INTO temp_table_alle_kt_dsw_mod6 t 
+MERGE INTO temp_table_alle_kt_dsw_mod8 t 
 USING ( 
     SELECT  
         p.teilenr, 
@@ -8,7 +8,7 @@ USING (
     WHERE p.teilenr IN (  
         SELECT DISTINCT a.teilenr  
         FROM allocs a 
-        WHERE a.prodauftr LIKE 'KA2018120603%'
+        WHERE a.prodauftr LIKE 'KA2018120644%'
         ) 
     AND ar.reserviert_menge > 0 
     GROUP BY p.teilenr 
