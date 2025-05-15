@@ -1,11 +1,11 @@
 DECLARE
-    v_start_ziffer NUMBER := 1; -- Startziffer
-    v_end_ziffer   NUMBER := 43; -- Endziffer
+    v_start_ziffer NUMBER := 44; -- Startziffer
+    v_end_ziffer   NUMBER := 64; -- Endziffer
     v_sql          VARCHAR2(4000);
 BEGIN
     FOR i IN v_start_ziffer..v_end_ziffer LOOP
         v_sql := '
-            MERGE INTO temp_table_ALLE_KT_DSW_MOD6 t
+            MERGE INTO temp_table_ALLE_KT_DSW_MOD8 t
             USING
             (
                 SELECT
