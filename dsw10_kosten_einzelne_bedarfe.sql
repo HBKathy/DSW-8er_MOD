@@ -1,10 +1,10 @@
 DECLARE
-    i NUMBER := 1; -- Startindex für die Schleife
-    max_num NUMBER := 43; -- Maximale Anzahl von KOSTEN_BEDARF-Spalten (KOSTEN_BEDARF_01 bis KOSTEN_BEDARF_25)
+    i NUMBER := 44; -- Startindex für die Schleife
+    max_num NUMBER := 64; -- Maximale Anzahl von KOSTEN_BEDARF-Spalten (KOSTEN_BEDARF_01 bis KOSTEN_BEDARF_25)
     sql_stmt VARCHAR2(4000); -- Dynamisches SQL-Statement
 BEGIN
     -- Dynamisches Update für jede Nummer
-    sql_stmt := 'UPDATE TEMP_TABLE_ALLE_KT_DSW_MOD6 SET ';
+    sql_stmt := 'UPDATE TEMP_TABLE_ALLE_KT_DSW_MOD8 SET ';
     
     FOR i IN 1..max_num LOOP
         -- Ergänze das dynamische SQL-Statement für jede Spalte
