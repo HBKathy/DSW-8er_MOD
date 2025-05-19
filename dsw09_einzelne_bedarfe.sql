@@ -1,23 +1,40 @@
 DECLARE
-    i NUMBER := 44; -- Startindex für die Schleife
-    max_num NUMBER := 64; -- Maximale Anzahl von LAGER- und BEDARF-Spalten (REST_LAGER_01 bis REST_LAGER_03, BEDARF_121101 bis BEDARF_121103)
-    sql_stmt VARCHAR2(4000); -- Dynamisches SQL-Statement
+    v_start_ziffer NUMBER := 44; -- Startwert (erste Endziffer)
+    v_end_ziffer   NUMBER := 64; -- Endwert (letzte Endziffer)
+    v_sql          VARCHAR2(4000);
 BEGIN
-    -- Dynamisches Update für jede Nummer
-    FOR i IN 1..max_num LOOP
-        -- Generiere das dynamische SQL-Statement
-        sql_stmt := 'UPDATE TEMP_TABLE_DSW_MOD8 SET ' ||
-                    'REST_LAGER_' || LPAD(i, 2, '0') || ' = CASE ' ||
-                    'WHEN NVL(' || CASE WHEN i = 1 THEN 'LAGERBESTAND' ELSE 'REST_LAGER_' || LPAD(i-1, 2, '0') END || ', 0) > NVL(BEDARF_1206' || LPAD(i, 2, '0') || ', 0) ' ||
-                    'THEN NVL(' || CASE WHEN i = 1 THEN 'LAGERBESTAND' ELSE 'REST_LAGER_' || LPAD(i-1, 2, '0') END || ', 0) - NVL(BEDARF_1206' || LPAD(i, 2, '0') || ', 0) ' ||
-                    'ELSE NULL END, ' ||
-                    'ABZGL_LAGER_' || LPAD(i, 2, '0') || ' = CASE ' ||
-                    'WHEN NVL(' || CASE WHEN i = 1 THEN 'LAGERBESTAND' ELSE 'REST_LAGER_' || LPAD(i-1, 2, '0') END || ', 0) < NVL(BEDARF_1206' || LPAD(i, 2, '0') || ', 0) ' ||
-                    'THEN NVL(BEDARF_1206' || LPAD(i, 2, '0') || ', 0) - NVL(' || CASE WHEN i = 1 THEN 'LAGERBESTAND' ELSE 'REST_LAGER_' || LPAD(i-1, 2, '0') END || ', 0) ' ||
-                    'ELSE NULL END';
-        
-        -- Führe das dynamische SQL-Statement aus
-        EXECUTE IMMEDIATE sql_stmt;
+    -- Spezialfall: Der erste Schritt basiert auf LAGERBESTAND
+    v_sql := '
+        UPDATE TEMP_TABLE_DSW_MOD8_techa
+        SET
+            REST_LAGER_' || v_start_ziffer || ' = CASE
+                WHEN NVL(LAGERBESTAND, 0) > NVL(BEDARF_1206' || v_start_ziffer || ', 0)
+                THEN NVL(LAGERBESTAND, 0) - NVL(BEDARF_1206' || v_start_ziffer || ', 0)
+                ELSE NULL
+            END,
+            ABZGL_LAGER_' || v_start_ziffer || ' = CASE
+                WHEN NVL(LAGERBESTAND, 0) < NVL(BEDARF_1206' || v_start_ziffer || ', 0)
+                THEN NVL(BEDARF_1206' || v_start_ziffer || ', 0) - NVL(LAGERBESTAND, 0)
+                ELSE NULL
+            END';
+    EXECUTE IMMEDIATE v_sql;
+
+    -- Nachfolgende Iterationen basieren auf den vorherigen REST_LAGER-Werten
+    FOR i IN v_start_ziffer+1..v_end_ziffer LOOP
+        v_sql := '
+            UPDATE TEMP_TABLE_DSW_MOD8_techa
+            SET
+                REST_LAGER_' || i || ' = CASE
+                    WHEN NVL(REST_LAGER_' || (i-1) || ', 0) > NVL(BEDARF_1206' || i || ', 0)
+                    THEN NVL(REST_LAGER_' || (i-1) || ', 0) - NVL(BEDARF_1206' || i || ', 0)
+                    ELSE NULL
+                END,
+                ABZGL_LAGER_' || i || ' = CASE
+                    WHEN NVL(REST_LAGER_' || (i-1) || ', 0) < NVL(BEDARF_1206' || i || ', 0)
+                    THEN NVL(BEDARF_1206' || i || ', 0) - NVL(REST_LAGER_' || (i-1) || ', 0)
+                    ELSE NULL
+                END';
+        EXECUTE IMMEDIATE v_sql;
     END LOOP;
 END;
 /
