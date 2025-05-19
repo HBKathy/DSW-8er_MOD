@@ -1,4 +1,4 @@
-MERGE INTO temp_table_alle_kt__dsw_mod8 target
+MERGE INTO temp_table_dsw_mod8 target
 USING (
     SELECT teilenr, nrlieferant, namelieferant
     FROM (
