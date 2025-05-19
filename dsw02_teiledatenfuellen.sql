@@ -1,4 +1,4 @@
-INSERT INTO temp_table_alle_kt_dsw_mod8 (
+INSERT INTO temp_table_dsw_mod8 (
     teilenr,
     bez,
     bez2,
