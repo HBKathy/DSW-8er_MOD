@@ -16,7 +16,7 @@ BEGIN
     END LOOP;
 
     -- Dynamisches SQL-Statement zusammenstellen
-    v_sql := 'UPDATE TEMP_TABLE_ALLE_KT_DSW_MOD8 SET Gesamtfehlteile = ' || v_summe;
+    v_sql := 'UPDATE TEMP_TABLE_DSW_MOD8 SET Gesamtfehlteile = ' || v_summe;
 
     -- Dynamisches SQL ausführen
     EXECUTE IMMEDIATE v_sql;
