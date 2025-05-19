@@ -1,4 +1,4 @@
 SELECT *
-FROM temp_table_alle_kt_dsw_mod8
-INNER JOIN temp_table_alle_kt_dsw_mod8_techa
-ON temp_table_alle_kt_dsw_mod8.teilenr = temp_table_alle_kt_dsw_mod8_techa.teilenr;
+FROM temp_table_dsw_mod8
+INNER JOIN temp_table_dsw_mod8_techa
+ON temp_table_dsw_mod8.teilenr = temp_table_dsw_mod8_techa.teilenr;
